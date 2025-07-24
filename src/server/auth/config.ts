@@ -57,7 +57,13 @@ export const authConfig = {
     async signIn({ user, account, profile, email, credentials }) {
       if (profile?.sub?.includes("discord")) {
         const s = profile.sub.split("|");
+        if (s.length < 2) {
+          return "/auth/invalid-discord";
+        }
         const discordID = s[s.length - 1];
+        if (!discordID) {
+          return "/auth/invalid-discord";
+        }
         const dUser = await db.user.findUnique({
           where: { discordID },
           select: { email: true },

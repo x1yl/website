@@ -129,7 +129,7 @@ textarea {
   border: 2px solid;
   margin: 0.25rem 0.5rem;
   padding: 0.25rem;
-  transition: colors 300ms ease-in-out;
+  transition: border-color 300ms ease-in-out, background-color 300ms ease-in-out;
 }
 
 input[type="text"]:focus,

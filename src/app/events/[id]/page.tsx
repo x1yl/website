@@ -152,9 +152,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
 
               <iframe
-                src={encodeURI(
-                  `https://maps.google.com/maps?q=${event.address}&t=&z=13&ie=UTF8&iwloc=&output=embed`,
-                )}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(event.address)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                 className="shadowed h-60 w-full rounded-xl"
               ></iframe>
             </div>

@@ -26,8 +26,10 @@ export default function GalleryPage() {
               willChange: "transform"
             }}
           >
-            <iframe 
-              loading="lazy" 
+            <iframe
+              loading="lazy"
+              title="Gallery - Canva Design"
+              onError={(e) => console.error('Failed to load gallery content:', e)}
               style={{
                 position: "absolute",
                 width: "100%",
@@ -38,10 +40,11 @@ export default function GalleryPage() {
                 padding: 0,
                 margin: 0
               }}
-              src="https://www.canva.com/design/DAGB-rSHQmc/_kOncHPgLCvEYUx03gZRUg/view?embed" 
+              src="https://www.canva.com/design/DAGB-rSHQmc/_kOncHPgLCvEYUx03gZRUg/view?embed"
               allowFullScreen
               allow="fullscreen"
             >
+              <p>Your browser does not support iframes. Please visit the gallery directly.</p>
             </iframe>
           </div>
         </div>

@@ -22,8 +22,12 @@ function calcMembers(joins: Date[], leaves: Date[]) {
   let j = 0;
   let members = 0;
   while (i < joins.length && j < leaves.length) {
-    const joinDate = joins[i]!;
-    const leaveDate = leaves[j]!;
+    const joinDate = joins[i];
+    const leaveDate = leaves[j];
+    if (!joinDate || !leaveDate) {
+      console.error('Invalid date found in arrays');
+      break;
+    }
     if (joinDate < leaveDate) {
       members++;
       dataPoints.push({ date: joinDate, members });
@@ -35,17 +39,27 @@ function calcMembers(joins: Date[], leaves: Date[]) {
     }
   }
   while (i < joins.length) {
+    const joinDate = joins[i];
+    if (!joinDate) {
+      console.error('Invalid join date at index', i);
+      i++;
+      continue;
+    }
     members++;
-    dataPoints.push({ date: joins[i]!, members });
+    dataPoints.push({ date: joinDate, members });
     i++;
   }
   while (j < leaves.length) {
+    const leaveDate = leaves[j];
+    if (!leaveDate) {
+      console.error('Invalid leave date at index', j);
+      j++;
+      continue;
+    }
     members--;
-    dataPoints.push({ date: leaves[j]!, members });
+    dataPoints.push({ date: leaveDate, members });
     j++;
   }
-
-  console.log(dataPoints);
 
   return dataPoints;
 }

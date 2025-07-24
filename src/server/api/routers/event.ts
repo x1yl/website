@@ -6,19 +6,40 @@ import {
 } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.event.findMany({
-      orderBy: { eventTime: "desc" }, // Show most recent events first
-      include: {
-        attendees: {
-          include: {
-            user: true,
+  getAll: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, cursor } = input;
+      const items = await ctx.db.event.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { eventTime: "desc" }, // Show most recent events first
+        include: {
+          attendees: {
+            include: {
+              user: true,
+            },
           },
         },
-      },
-      // Remove date filter to show all events (past and future)
-    });
-  }),
+        // Remove date filter to show all events (past and future)
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      return {
+        items,
+        nextCursor,
+      };
+    }),
 
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
