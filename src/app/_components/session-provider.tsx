@@ -8,6 +8,14 @@ interface NextAuthSessionProviderProps {
   session?: Session | null;
 }
 
+/**
+ * Provides NextAuth session context to its child components.
+ *
+ * Wraps children with the NextAuth `SessionProvider`, optionally supplying a session object to manage authentication state.
+ *
+ * @param children - The React nodes to be rendered within the session context
+ * @param session - Optional session object to initialize authentication state
+ */
 export function NextAuthSessionProvider({ 
   children, 
   session 

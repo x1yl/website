@@ -1,6 +1,13 @@
 import { api } from "~/trpc/server";
 import Link from "next/link";
 
+/**
+ * Displays a list of events fetched from the backend, rendering each as a card with event details and status.
+ *
+ * Fetches all events asynchronously and presents them in a responsive grid. Each event card links to its detail page, visually distinguishes past and upcoming events, and shows relevant information such as name, date, address, hours, and points. If no events are available, an empty state message is shown.
+ *
+ * @returns The rendered events page as a React element.
+ */
 export default async function EventsPage() {
   // Fetch real events from the database
   const events = await api.event.getAll();

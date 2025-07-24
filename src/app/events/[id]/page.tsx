@@ -17,6 +17,14 @@ interface EventPageProps {
   };
 }
 
+/**
+ * Renders a detailed event page for a specific event, displaying event information, rewards, location, description, participation steps, attendance status, and registration controls.
+ *
+ * Fetches event data based on the provided event ID. If the event does not exist, a 404 page is shown. The page adapts its content and controls based on whether the event is upcoming or has already occurred.
+ *
+ * @param params - Route parameters containing the event ID
+ * @returns The event detail page as a React element
+ */
 export default async function EventPage({ params }: EventPageProps) {
   const event = await api.event.getById({ id: params.id });
 

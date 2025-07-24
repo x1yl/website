@@ -1,6 +1,13 @@
 import { api } from "~/trpc/server";
 import { Markdown } from "~/utils/markdown";
 
+/**
+ * Renders the executive team page, displaying current and alumni executives with their profiles, positions, and contact information.
+ *
+ * Fetches executive data from the backend, separates current and alumni members based on graduation year, and presents them in styled grids. If no executives are available, shows an empty state message.
+ *
+ * @returns The JSX markup for the executive team page.
+ */
 export default async function ExecutivesPage() {
   // Fetch real executives from the database
   const executives = await api.exec.getAll();

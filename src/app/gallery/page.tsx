@@ -1,3 +1,8 @@
+/**
+ * Renders a gallery page with a responsive embedded Canva design framed within a styled container.
+ *
+ * The page features a centered "Gallery" header and adapts its background for light and dark themes. The embedded Canva content maintains a 16:9 aspect ratio and supports fullscreen viewing.
+ */
 export default function GalleryPage() {
   return (
     <div className=" bg-gray-50 dark:bg-gray-900 py-12 transition-colors">

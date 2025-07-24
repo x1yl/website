@@ -5,6 +5,12 @@ interface MarkdownProps {
   content: string;
 }
 
+/**
+ * Renders Markdown content as styled HTML elements with support for GitHub Flavored Markdown and custom Tailwind CSS styling.
+ *
+ * @param content - The Markdown text to render
+ * @returns A React element displaying the rendered and styled Markdown content
+ */
 export function Markdown({ content }: MarkdownProps) {
   return (
     <div className="prose prose-gray dark:prose-invert max-w-none">

@@ -38,6 +38,13 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
+/**
+ * Provides tRPC and React Query context to the React component tree.
+ *
+ * Wraps children with both the React Query `QueryClientProvider` and the tRPC provider, enabling type-safe API communication and query management throughout the application.
+ *
+ * @param props.children - The React nodes to receive tRPC and React Query context
+ */
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
@@ -71,6 +78,13 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Returns the appropriate base URL for API requests depending on the runtime environment.
+ *
+ * Uses the browser's origin on the client, the Vercel deployment URL if available on the server, or defaults to localhost with the specified or default port.
+ *
+ * @returns The resolved base URL as a string
+ */
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;

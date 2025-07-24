@@ -68,6 +68,14 @@ interface DeletedUsersCSV {
   leftAt: string;
 }
 
+/**
+ * Reads a CSV file from the specified path and parses its contents into an array of objects.
+ *
+ * Each object represents a row, with keys corresponding to column headers.
+ *
+ * @param filePath - The path to the CSV file to read
+ * @returns An array of objects representing the parsed CSV rows
+ */
 function readCSV(filePath: string): any[] {
   const csvData = fs.readFileSync(filePath, 'utf-8');
   return parse(csvData, {
@@ -76,22 +84,53 @@ function readCSV(filePath: string): any[] {
   });
 }
 
+/**
+ * Converts a string to a boolean value.
+ *
+ * Returns true if the input is "true" (case-insensitive) or "1"; otherwise, returns false.
+ *
+ * @param value - The string to convert to boolean
+ * @returns The boolean representation of the input string
+ */
 function parseBoolean(value: string): boolean {
   return value.toLowerCase() === 'true' || value === '1';
 }
 
+/**
+ * Converts a date string to a JavaScript Date object.
+ *
+ * @param dateString - The string representation of a date
+ * @returns A Date object corresponding to the input string
+ */
 function parseDate(dateString: string): Date {
   return new Date(dateString);
 }
 
+/**
+ * Parses a string as a floating-point number, returning 0 if parsing fails.
+ *
+ * @param value - The string to parse as a float
+ * @returns The parsed float value, or 0 if the input is not a valid number
+ */
 function parseFloatSafe(value: string): number {
   return parseFloat(value) || 0;
 }
 
+/**
+ * Parses a string as an integer, returning 0 if parsing fails.
+ *
+ * @param value - The string to parse as an integer
+ * @returns The parsed integer, or 0 if the input is not a valid integer
+ */
 function parseIntSafe(value: string): number {
   return parseInt(value) || 0;
 }
 
+/**
+ * Imports user data from a CSV file and upserts each record into the database.
+ *
+ * Reads user information from a predefined CSV file path, parses and converts fields as needed, and upserts each user into the database using their email as the unique key. Logs errors for individual records without interrupting the overall import process.
+ */
 async function importUsers() {
   console.log("Importing users...");
   const csvPath = "/home/kevin/_User__202507231626.csv";
@@ -157,6 +196,11 @@ async function importUsers() {
   console.log(`Imported ${users.length} users`);
 }
 
+/**
+ * Imports executive details from a CSV file and upserts them into the database.
+ *
+ * Reads executive details from a specified CSV file, then creates or updates records in the `execDetails` table based on email. Fields include position, description, and optional selfie URL.
+ */
 async function importExecDetails() {
   console.log("Importing exec details...");
   const csvPath = "/home/kevin/ExecDetails_202507231626.csv";
@@ -192,6 +236,11 @@ async function importExecDetails() {
   console.log(`Imported ${execDetails.length} exec details`);
 }
 
+/**
+ * Imports event data from a CSV file and upserts each record into the database.
+ *
+ * Reads event records from a specified CSV file, converts field values to appropriate types, and upserts each event into the database using its ID as the unique key. Logs errors for individual records without interrupting the overall import process.
+ */
 async function importEvents() {
   console.log("Importing events...");
   const csvPath = "/home/kevin/Event_202507231625.csv";
@@ -249,6 +298,11 @@ async function importEvents() {
   console.log(`Imported ${events.length} events`);
 }
 
+/**
+ * Imports event attendance records from a CSV file and upserts them into the database.
+ *
+ * Reads event attendee data from a specified CSV file, parses and converts relevant fields, and upserts each record into the `eventAttendance` table using a composite key of user email and event ID.
+ */
 async function importEventAttendees() {
   console.log("Importing event attendees...");
   const csvPath = "/home/kevin/EventAttendee_202507231625.csv";
@@ -294,6 +348,11 @@ async function importEventAttendees() {
   console.log(`Imported ${attendees.length} event attendees`);
 }
 
+/**
+ * Imports deleted user records from a CSV file and upserts them into the database.
+ *
+ * Reads deleted user data from a specified CSV file, parses registration and leaving dates, and upserts each record into the `deletedUsers` table keyed by ID. Logs progress and errors for individual records.
+ */
 async function importDeletedUsers() {
   console.log("Importing deleted users...");
   const csvPath = "/home/kevin/DeletedUsers_202507231625.csv";
@@ -327,6 +386,11 @@ async function importDeletedUsers() {
   console.log(`Imported ${deletedUsers.length} deleted users`);
 }
 
+/**
+ * Orchestrates the sequential import of users, executive details, events, event attendees, and deleted users from CSV files into the database.
+ *
+ * Ensures that data is imported in an order that respects foreign key constraints. Logs progress and errors, and disconnects the Prisma client upon completion.
+ */
 async function main() {
   try {
     console.log("Starting data import...");
