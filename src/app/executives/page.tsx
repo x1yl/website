@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import { Markdown } from "~/utils/markdown";
+import Image from "next/image";
 
 /**
  * Displays a page listing current and alumni executives, grouped by graduation year, with profile details and contact options.
@@ -14,11 +15,16 @@ export default async function ExecutivesPage() {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   // Academic year starts in September, so if we're before July, we're still in the previous academic year
-  const academicYearCutoff = currentDate.getMonth() < 6 ? currentYear : currentYear + 1;
-  
+  const academicYearCutoff =
+    currentDate.getMonth() < 6 ? currentYear : currentYear + 1;
+
   // Separate current and alumni executives
-  const currentExecutives = executives.filter(exec => exec.user.gradYear >= academicYearCutoff);
-  const alumniExecutives = executives.filter(exec => exec.user.gradYear < academicYearCutoff);
+  const currentExecutives = executives.filter(
+    (exec) => exec.user.gradYear >= academicYearCutoff,
+  );
+  const alumniExecutives = executives.filter(
+    (exec) => exec.user.gradYear < academicYearCutoff,
+  );
 
   const getPositionTitle = (position: string) => {
     switch (position) {
@@ -45,11 +51,11 @@ export default async function ExecutivesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 transition-colors">
+    <div className="min-h-screen bg-gray-50 py-12 transition-colors dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
             Meet Our Executive Team
           </h1>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
@@ -62,22 +68,24 @@ export default async function ExecutivesPage() {
           {currentExecutives.map((exec) => (
             <div
               key={exec.email}
-              className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 transition-all duration-300 hover:shadow-lg hover:ring-gray-300 dark:hover:ring-gray-600"
+              className="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 transition-all duration-300 hover:shadow-lg hover:ring-gray-300 dark:bg-gray-800 dark:ring-gray-700 dark:hover:ring-gray-600"
             >
               {/* Profile Image */}
               <div className="aspect-[4/3]">
                 {exec.selfieURL ? (
-                  <img
+                  <Image
                     src={exec.selfieURL}
                     alt={exec.user.name}
+                    width={300}
+                    height={225}
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="bg-gradient-to-br from-teal-400 to-emerald-500 h-full">
+                  <div className="h-full bg-gradient-to-br from-teal-400 to-emerald-500">
                     <div className="flex h-full items-center justify-center text-white">
                       <div className="text-center">
                         <svg
-                          className="mx-auto h-20 w-20 mb-4"
+                          className="mx-auto mb-4 h-20 w-20"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -90,7 +98,10 @@ export default async function ExecutivesPage() {
                           />
                         </svg>
                         <p className="text-sm font-medium opacity-90">
-                          {getDisplayName(exec.user.preferredName, exec.user.name)}
+                          {getDisplayName(
+                            exec.user.preferredName,
+                            exec.user.name,
+                          )}
                         </p>
                       </div>
                     </div>
@@ -104,7 +115,7 @@ export default async function ExecutivesPage() {
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     {getDisplayName(exec.user.preferredName, exec.user.name)}
                   </h3>
-                  <p className="text-sm font-semibold text-default dark:text-default-lighter">
+                  <p className="text-default dark:text-default-lighter text-sm font-semibold">
                     {getPositionTitle(exec.position)}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -112,7 +123,7 @@ export default async function ExecutivesPage() {
                   </p>
                 </div>
 
-                <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                   <Markdown content={exec.description} />
                 </div>
 
@@ -120,10 +131,20 @@ export default async function ExecutivesPage() {
                 <div className="mt-6">
                   <a
                     href={`mailto:${exec.email}`}
-                    className="inline-flex items-center rounded-md bg-default hover:bg-default-darker dark:bg-default-darker dark:hover:bg-default px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors duration-200"
+                    className="bg-default hover:bg-default-darker dark:bg-default-darker dark:hover:bg-default inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors duration-200"
                   >
-                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <svg
+                      className="mr-2 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
                     </svg>
                     Contact
                   </a>
@@ -137,7 +158,7 @@ export default async function ExecutivesPage() {
         {alumniExecutives.length > 0 && (
           <>
             <div className="mt-16 mb-12 text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                 Alumni Executives
               </h2>
               <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
@@ -149,22 +170,24 @@ export default async function ExecutivesPage() {
               {alumniExecutives.map((exec) => (
                 <div
                   key={exec.email}
-                  className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 transition-all duration-300 hover:shadow-lg hover:ring-gray-300 dark:hover:ring-gray-600 opacity-75"
+                  className="group relative overflow-hidden rounded-2xl bg-white opacity-75 shadow-sm ring-1 ring-gray-200 transition-all duration-300 hover:shadow-lg hover:ring-gray-300 dark:bg-gray-800 dark:ring-gray-700 dark:hover:ring-gray-600"
                 >
                   {/* Profile Image */}
                   <div className="aspect-[4/3]">
                     {exec.selfieURL ? (
-                      <img
+                      <Image
                         src={exec.selfieURL}
                         alt={exec.user.name}
+                        width={300}
+                        height={225}
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="bg-gradient-to-br from-gray-400 to-gray-500 h-full">
+                      <div className="h-full bg-gradient-to-br from-gray-400 to-gray-500">
                         <div className="flex h-full items-center justify-center text-white">
                           <div className="text-center">
                             <svg
-                              className="mx-auto h-20 w-20 mb-4"
+                              className="mx-auto mb-4 h-20 w-20"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -177,7 +200,10 @@ export default async function ExecutivesPage() {
                               />
                             </svg>
                             <p className="text-sm font-medium opacity-90">
-                              {getDisplayName(exec.user.preferredName, exec.user.name)}
+                              {getDisplayName(
+                                exec.user.preferredName,
+                                exec.user.name,
+                              )}
                             </p>
                           </div>
                         </div>
@@ -189,7 +215,10 @@ export default async function ExecutivesPage() {
                   <div className="p-6">
                     <div className="mb-4">
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                        {getDisplayName(exec.user.preferredName, exec.user.name)}
+                        {getDisplayName(
+                          exec.user.preferredName,
+                          exec.user.name,
+                        )}
                       </h3>
                       <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                         {getPositionTitle(exec.position)} • Alumni
@@ -199,7 +228,7 @@ export default async function ExecutivesPage() {
                       </p>
                     </div>
 
-                    <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                       <Markdown content={exec.description} />
                     </div>
                   </div>
@@ -211,7 +240,7 @@ export default async function ExecutivesPage() {
 
         {/* Empty State */}
         {currentExecutives.length === 0 && alumniExecutives.length === 0 && (
-          <div className="text-center py-12">
+          <div className="py-12 text-center">
             <svg
               className="mx-auto h-12 w-12 text-gray-400"
               fill="none"
@@ -225,11 +254,14 @@ export default async function ExecutivesPage() {
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No executives listed</h3>
-            <p className="mt-1 text-sm text-gray-500">Executive team information will appear here!</p>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">
+              No executives listed
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Executive team information will appear here!
+            </p>
           </div>
         )}
-
       </div>
     </div>
   );

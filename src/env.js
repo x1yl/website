@@ -17,6 +17,11 @@ export const env = createEnv({
     AUTH_AUTH0_SECRET: z.string(),
     AUTH_AUTH0_ISSUER: z.string().url(),
     DATABASE_URL: z.string().url(),
+    CSV_USERS_PATH: z.string().optional(),
+    CSV_EXEC_DETAILS_PATH: z.string().optional(),
+    CSV_EVENTS_PATH: z.string().optional(),
+    CSV_EVENT_ATTENDEES_PATH: z.string().optional(),
+    CSV_DELETED_USERS_PATH: z.string().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -43,6 +48,11 @@ export const env = createEnv({
     AUTH_AUTH0_SECRET: process.env.AUTH_AUTH0_SECRET,
     AUTH_AUTH0_ISSUER: process.env.AUTH_AUTH0_ISSUER,
     DATABASE_URL: process.env.DATABASE_URL,
+    CSV_USERS_PATH: process.env.CSV_USERS_PATH,
+    CSV_EXEC_DETAILS_PATH: process.env.CSV_EXEC_DETAILS_PATH,
+    CSV_EVENTS_PATH: process.env.CSV_EVENTS_PATH,
+    CSV_EVENT_ATTENDEES_PATH: process.env.CSV_EVENT_ATTENDEES_PATH,
+    CSV_DELETED_USERS_PATH: process.env.CSV_DELETED_USERS_PATH,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**

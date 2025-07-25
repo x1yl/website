@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeftIcon,
   ClockIcon,
@@ -81,9 +82,11 @@ export default async function EventPage({ params }: EventPageProps) {
             {/* Event Image */}
             {event.imageURL ? (
               <div className="aspect-[16/9] overflow-hidden rounded-lg">
-                <img
+                <Image
                   src={event.imageURL}
                   alt={event.name}
+                  width={800}
+                  height={450}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -237,7 +240,6 @@ export default async function EventPage({ params }: EventPageProps) {
                   </SignInButton>
                 </div>
               )}
-
             </div>
 
             {/* Event Status */}

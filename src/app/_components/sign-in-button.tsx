@@ -17,11 +17,8 @@ interface SignInButtonProps {
  */
 export function SignInButton({ className, children }: SignInButtonProps) {
   return (
-    <button
-      onClick={() => signIn("auth0")}
-      className={className}
-    >
-      {children || "Sign In"}
+    <button onClick={() => signIn("auth0")} className={className}>
+      {children ?? "Sign In"}
     </button>
   );
 }

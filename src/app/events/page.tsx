@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import Link from "next/link";
+import Image from "next/image";
 
 /**
  * Asynchronously renders a responsive page displaying a grid of events fetched from the backend.
@@ -8,7 +9,9 @@ import Link from "next/link";
  */
 export default async function EventsPage() {
   // Fetch real events from the database
-  const events = await api.event.getAll();
+  const { items: events } = await api.event.getAll({
+    limit: 20, // Default limit as defined in the procedure
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 transition-colors dark:bg-gray-900">
@@ -53,9 +56,11 @@ export default async function EventsPage() {
                     {/* Event Image */}
                     <div className="aspect-[16/9]">
                       {event.imageURL ? (
-                        <img
+                        <Image
                           src={event.imageURL}
                           alt={event.name}
+                          width={400}
+                          height={225}
                           className="h-full w-full object-cover"
                         />
                       ) : (

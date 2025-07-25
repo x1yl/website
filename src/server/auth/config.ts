@@ -54,7 +54,13 @@ export const authConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({
+      user,
+      account: _account,
+      profile,
+      email: _email,
+      credentials: _credentials,
+    }) {
       if (profile?.sub?.includes("discord")) {
         const s = profile.sub.split("|");
         if (s.length < 2) {
@@ -82,7 +88,7 @@ export const authConfig = {
 
       return "/auth/invalid-email";
     },
-    async session({ session, user, token }) {
+    async session({ session, user: _user, token }) {
       return {
         ...session,
         user: {

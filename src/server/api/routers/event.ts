@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
   getAll: publicProcedure
@@ -11,7 +8,7 @@ export const eventRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).default(20),
         cursor: z.string().nullish(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { limit, cursor } = input;
@@ -61,7 +58,7 @@ export const eventRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).default(20),
         cursor: z.string().nullish(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { limit, cursor } = input;

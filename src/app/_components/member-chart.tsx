@@ -34,7 +34,7 @@ function calcMembers(joins: Date[], leaves: Date[]) {
     const joinDate = joins[i];
     const leaveDate = leaves[j];
     if (!joinDate || !leaveDate) {
-      console.error('Invalid date found in arrays');
+      console.error("Invalid date found in arrays");
       break;
     }
     if (joinDate < leaveDate) {
@@ -50,7 +50,7 @@ function calcMembers(joins: Date[], leaves: Date[]) {
   while (i < joins.length) {
     const joinDate = joins[i];
     if (!joinDate) {
-      console.error('Invalid join date at index', i);
+      console.error("Invalid join date at index", i);
       i++;
       continue;
     }
@@ -61,7 +61,7 @@ function calcMembers(joins: Date[], leaves: Date[]) {
   while (j < leaves.length) {
     const leaveDate = leaves[j];
     if (!leaveDate) {
-      console.error('Invalid leave date at index', j);
+      console.error("Invalid leave date at index", j);
       j++;
       continue;
     }
@@ -87,7 +87,7 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
       hardMin: joins[0],
       hardMax: new Date(),
     }),
-    [joins]
+    [joins],
   );
 
   const dataPoints = useMemo(() => calcMembers(joins, leaves), [joins, leaves]);
@@ -98,11 +98,11 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
         getValue: (datum) => datum.members,
       },
     ],
-    []
+    [],
   );
 
   return (
-    <div className="w-full h-[50dvh] my-10 z-10" ref={ref}>
+    <div className="z-10 my-10 h-[50dvh] w-full" ref={ref}>
       {mounted && dataPoints.length > 0 ? (
         <Chart
           options={{
@@ -113,7 +113,7 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
                   ...dataPoints,
                   {
                     date: new Date(),
-                    members: dataPoints[dataPoints.length - 1]?.members || 0,
+                    members: dataPoints[dataPoints.length - 1]?.members ?? 0,
                   },
                 ],
               },
@@ -136,8 +136,8 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
               align: "auto",
               render: ({ focusedDatum }) => {
                 return (
-                  <div className="bg-white dark:bg-gray-900 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700">
-                    <p className="font-semibold p-2">
+                  <div className="rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
+                    <p className="p-2 font-semibold">
                       {focusedDatum?.originalDatum.date.toLocaleString(
                         undefined,
                         {
@@ -147,12 +147,12 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
                           hour12: true,
                           hour: "numeric",
                           minute: "numeric",
-                        }
+                        },
                       )}
                     </p>
                     <hr className="border-gray-200 dark:border-gray-700" />
                     <p className="p-2">
-                      <span className="h-3.5 w-3.5 rounded-full bg-default inline-block mr-2" />
+                      <span className="bg-default mr-2 inline-block h-3.5 w-3.5 rounded-full" />
                       {focusedDatum?.originalDatum.members} Members
                     </p>
                   </div>
@@ -162,7 +162,7 @@ export const MemberChart: FC<Props> = ({ joins, leaves }) => {
           }}
         />
       ) : (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        <div className="py-8 text-center text-gray-500 dark:text-gray-400">
           <p>No membership data available yet</p>
         </div>
       )}
