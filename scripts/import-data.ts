@@ -7,6 +7,18 @@ import { parse } from "csv-parse/sync";
 const CSV_USERS_PATH =
   process.env.CSV_USERS_PATH ?? "./data/users.csv";
 
+const CSV_EXEC_DETAILS_PATH =
+  process.env.CSV_EXEC_DETAILS_PATH ?? "./data/exec_details.csv";
+
+const CSV_EVENTS_PATH =
+  process.env.CSV_EVENTS_PATH ?? "./data/events.csv";
+
+const CSV_EVENT_ATTENDEES_PATH =
+  process.env.CSV_EVENT_ATTENDEES_PATH ?? "./data/event_attendees.csv";
+
+const CSV_DELETED_USERS_PATH =
+  process.env.CSV_DELETED_USERS_PATH ?? "./data/deleted_users.csv";
+
 const prisma = new PrismaClient();
 
 interface UserCSV {
