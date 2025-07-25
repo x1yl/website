@@ -1,6 +1,11 @@
 import { api } from "~/trpc/server";
 import { Markdown } from "~/utils/markdown";
 
+/**
+ * Displays a page listing current and alumni executives, grouped by graduation year, with profile details and contact options.
+ *
+ * Fetches executive data from the backend, determines the current academic year, and separates executives into current and alumni categories. Renders a responsive grid of executive cards with profile images, names, positions, graduation years, pronouns, and descriptions. Alumni are shown in a distinct section with a faded style. If no executives are available, an empty state message is displayed.
+ */
 export default async function ExecutivesPage() {
   // Fetch real executives from the database
   const executives = await api.exec.getAll();

@@ -23,6 +23,13 @@ const navigation = [
   { name: "Executives", href: "/executives", icon: UserGroupIcon },
 ];
 
+/**
+ * Renders a responsive sidebar navigation component with theme toggling and authentication controls.
+ *
+ * The sidebar adapts its layout and content for desktop, tablet, and mobile viewports. It displays navigation links, a theme toggle button, and authentication actions (sign in/out) based on the user's session state. The component prevents hydration mismatches by rendering minimal placeholders until mounted.
+ *
+ * @returns The sidebar navigation UI as a React element.
+ */
 export function Sidebar() {
   const pathname = usePathname();
   const { setTheme, theme, resolvedTheme } = useTheme();

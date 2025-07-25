@@ -16,6 +16,15 @@ interface Props {
   joins: Date[];
 }
 
+/**
+ * Calculates the membership count over time based on arrays of join and leave dates.
+ *
+ * Iterates through sorted join and leave date arrays, incrementing the count on each join and decrementing on each leave, to produce a time series of membership counts at each relevant date.
+ *
+ * @param joins - Array of dates when members joined
+ * @param leaves - Array of dates when members left
+ * @returns An array of objects, each containing a `date` and the corresponding `members` count at that date
+ */
 function calcMembers(joins: Date[], leaves: Date[]) {
   const dataPoints: DailyMembers[] = [];
   let i = 0;
