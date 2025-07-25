@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Renders a responsive gallery page with a styled header and an embedded Canva design.
  *

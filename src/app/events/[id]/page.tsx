@@ -12,22 +12,21 @@ import {
 import { Markdown } from "~/utils/markdown";
 import { SignInButton } from "~/app/_components/sign-in-button";
 
-interface EventPageProps {
-  params: {
-    id: string;
-  };
-}
+type PageParams = {
+  params: Promise<{ id: string }>;
+};
 
 /**
  * Renders a detailed event page for a specific event ID, displaying event information, rewards, location, description, attendance, and registration status.
  *
  * If the event is not found, triggers a 404 not found response.
  *
- * @param params - An object containing the event `id` from the URL parameters.
+ * @param params - A Promise containing an object with the event `id` from the URL parameters.
  * @returns The JSX markup for the event detail page.
  */
-export default async function EventPage({ params }: EventPageProps) {
-  const event = await api.event.getById({ id: params.id });
+export default async function EventPage({ params }: PageParams) {
+  const { id } = await params;
+  const event = await api.event.getById({ id });
 
   if (!event) {
     notFound();
