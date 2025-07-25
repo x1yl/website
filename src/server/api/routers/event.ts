@@ -56,21 +56,42 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  getPast: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.event.findMany({
-      orderBy: { eventTime: "desc" },
-      include: {
-        attendees: {
-          include: {
-            user: true,
+  getPast: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, cursor } = input;
+      const items = await ctx.db.event.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { eventTime: "desc" },
+        include: {
+          attendees: {
+            include: {
+              user: true,
+            },
           },
         },
-      },
-      where: {
-        eventTime: {
-          lt: new Date(),
+        where: {
+          eventTime: {
+            lt: new Date(),
+          },
         },
-      },
-    });
-  }),
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      return {
+        items,
+        nextCursor,
+      };
+    }),
 });
