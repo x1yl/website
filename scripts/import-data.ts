@@ -5,18 +5,7 @@ import { parse } from "csv-parse/sync";
 
 // Load environment variables for CSV paths
 const CSV_USERS_PATH =
-  process.env.CSV_USERS_PATH ?? "/home/kevin/_User__202507231626.csv";
-const CSV_EXEC_DETAILS_PATH =
-  process.env.CSV_EXEC_DETAILS_PATH ??
-  "/home/kevin/ExecDetails_202507231626.csv";
-const CSV_EVENTS_PATH =
-  process.env.CSV_EVENTS_PATH ?? "/home/kevin/Event_202507231625.csv";
-const CSV_EVENT_ATTENDEES_PATH =
-  process.env.CSV_EVENT_ATTENDEES_PATH ??
-  "/home/kevin/EventAttendee_202507231625.csv";
-const CSV_DELETED_USERS_PATH =
-  process.env.CSV_DELETED_USERS_PATH ??
-  "/home/kevin/DeletedUsers_202507231625.csv";
+  process.env.CSV_USERS_PATH ?? "./data/users.csv";
 
 const prisma = new PrismaClient();
 
