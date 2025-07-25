@@ -3,6 +3,22 @@ import * as fs from "fs";
 import * as path from "path";
 import { parse } from "csv-parse/sync";
 
+// Load environment variables for CSV paths
+const CSV_USERS_PATH =
+  process.env.CSV_USERS_PATH ?? "./data/users.csv";
+
+const CSV_EXEC_DETAILS_PATH =
+  process.env.CSV_EXEC_DETAILS_PATH ?? "./data/exec_details.csv";
+
+const CSV_EVENTS_PATH =
+  process.env.CSV_EVENTS_PATH ?? "./data/events.csv";
+
+const CSV_EVENT_ATTENDEES_PATH =
+  process.env.CSV_EVENT_ATTENDEES_PATH ?? "./data/event_attendees.csv";
+
+const CSV_DELETED_USERS_PATH =
+  process.env.CSV_DELETED_USERS_PATH ?? "./data/deleted_users.csv";
+
 const prisma = new PrismaClient();
 
 interface UserCSV {
@@ -75,7 +91,7 @@ interface DeletedUsersCSV {
  * @returns An array of objects representing the parsed CSV rows
  */
 function readCSV(filePath: string): any[] {
-  const csvData = fs.readFileSync(filePath, 'utf-8');
+  const csvData = fs.readFileSync(filePath, "utf-8");
   return parse(csvData, {
     columns: true,
     skip_empty_lines: true,
@@ -89,7 +105,7 @@ function readCSV(filePath: string): any[] {
  * @returns The boolean representation of the input string
  */
 function parseBoolean(value: string): boolean {
-  return value.toLowerCase() === 'true' || value === '1';
+  return value.toLowerCase() === "true" || value === "1";
 }
 
 /**
@@ -129,15 +145,15 @@ function parseIntSafe(value: string): number {
  */
 async function importUsers() {
   console.log("Importing users...");
-  const csvPath = "/home/kevin/_User__202507231626.csv";
-  
+  const csvPath = CSV_USERS_PATH;
+
   if (!fs.existsSync(csvPath)) {
     console.log(`User CSV file not found at ${csvPath}`);
     return;
   }
 
   const users: UserCSV[] = readCSV(csvPath);
-  
+
   for (const user of users) {
     try {
       await prisma.user.upsert({
@@ -188,7 +204,7 @@ async function importUsers() {
       console.error(`Error importing user ${user.email}:`, error);
     }
   }
-  
+
   console.log(`Imported ${users.length} users`);
 }
 
@@ -199,15 +215,15 @@ async function importUsers() {
  */
 async function importExecDetails() {
   console.log("Importing exec details...");
-  const csvPath = "/home/kevin/ExecDetails_202507231626.csv";
-  
+  const csvPath = CSV_EXEC_DETAILS_PATH;
+
   if (!fs.existsSync(csvPath)) {
     console.log(`ExecDetails CSV file not found at ${csvPath}`);
     return;
   }
 
   const execDetails: ExecDetailsCSV[] = readCSV(csvPath);
-  
+
   for (const exec of execDetails) {
     try {
       await prisma.execDetails.upsert({
@@ -228,7 +244,7 @@ async function importExecDetails() {
       console.error(`Error importing exec details for ${exec.email}:`, error);
     }
   }
-  
+
   console.log(`Imported ${execDetails.length} exec details`);
 }
 
@@ -239,15 +255,15 @@ async function importExecDetails() {
  */
 async function importEvents() {
   console.log("Importing events...");
-  const csvPath = "/home/kevin/Event_202507231625.csv";
-  
+  const csvPath = CSV_EVENTS_PATH;
+
   if (!fs.existsSync(csvPath)) {
     console.log(`Event CSV file not found at ${csvPath}`);
     return;
   }
 
   const events: EventCSV[] = readCSV(csvPath);
-  
+
   for (const event of events) {
     try {
       await prisma.event.upsert({
@@ -290,7 +306,7 @@ async function importEvents() {
       console.error(`Error importing event ${event.id}:`, error);
     }
   }
-  
+
   console.log(`Imported ${events.length} events`);
 }
 
@@ -301,15 +317,15 @@ async function importEvents() {
  */
 async function importEventAttendees() {
   console.log("Importing event attendees...");
-  const csvPath = "/home/kevin/EventAttendee_202507231625.csv";
-  
+  const csvPath = CSV_EVENT_ATTENDEES_PATH;
+
   if (!fs.existsSync(csvPath)) {
     console.log(`EventAttendee CSV file not found at ${csvPath}`);
     return;
   }
 
   const attendees: EventAttendeeCSV[] = readCSV(csvPath);
-  
+
   for (const attendee of attendees) {
     try {
       await prisma.eventAttendance.upsert({
@@ -324,7 +340,9 @@ async function importEventAttendees() {
           earnedHours: parseFloatSafe(attendee.earnedHours),
           earnedEntries: parseFloatSafe(attendee.earnedEntries),
           registeredAt: parseDate(attendee.registeredAt),
-          attendedAt: attendee.attendedAt ? parseDate(attendee.attendedAt) : null,
+          attendedAt: attendee.attendedAt
+            ? parseDate(attendee.attendedAt)
+            : null,
         },
         create: {
           userEmail: attendee.userEmail,
@@ -333,14 +351,19 @@ async function importEventAttendees() {
           earnedHours: parseFloatSafe(attendee.earnedHours),
           earnedEntries: parseFloatSafe(attendee.earnedEntries),
           registeredAt: parseDate(attendee.registeredAt),
-          attendedAt: attendee.attendedAt ? parseDate(attendee.attendedAt) : null,
+          attendedAt: attendee.attendedAt
+            ? parseDate(attendee.attendedAt)
+            : null,
         },
       });
     } catch (error) {
-      console.error(`Error importing attendee ${attendee.userEmail} for event ${attendee.eventId}:`, error);
+      console.error(
+        `Error importing attendee ${attendee.userEmail} for event ${attendee.eventId}:`,
+        error,
+      );
     }
   }
-  
+
   console.log(`Imported ${attendees.length} event attendees`);
 }
 
@@ -351,15 +374,15 @@ async function importEventAttendees() {
  */
 async function importDeletedUsers() {
   console.log("Importing deleted users...");
-  const csvPath = "/home/kevin/DeletedUsers_202507231625.csv";
-  
+  const csvPath = CSV_DELETED_USERS_PATH;
+
   if (!fs.existsSync(csvPath)) {
     console.log(`DeletedUsers CSV file not found at ${csvPath}`);
     return;
   }
 
   const deletedUsers: DeletedUsersCSV[] = readCSV(csvPath);
-  
+
   for (const deletedUser of deletedUsers) {
     try {
       await prisma.deletedUsers.upsert({
@@ -378,7 +401,7 @@ async function importDeletedUsers() {
       console.error(`Error importing deleted user ${deletedUser.id}:`, error);
     }
   }
-  
+
   console.log(`Imported ${deletedUsers.length} deleted users`);
 }
 
@@ -390,14 +413,14 @@ async function importDeletedUsers() {
 async function main() {
   try {
     console.log("Starting data import...");
-    
+
     // Import in order due to foreign key constraints
     await importUsers();
     await importExecDetails();
     await importEvents();
     await importEventAttendees();
     await importDeletedUsers();
-    
+
     console.log("Data import completed successfully!");
   } catch (error) {
     console.error("Error during import:", error);

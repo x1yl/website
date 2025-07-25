@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeftIcon,
   ClockIcon,
@@ -11,22 +12,21 @@ import {
 import { Markdown } from "~/utils/markdown";
 import { SignInButton } from "~/app/_components/sign-in-button";
 
-interface EventPageProps {
-  params: {
-    id: string;
-  };
-}
+type PageParams = {
+  params: Promise<{ id: string }>;
+};
 
 /**
  * Renders a detailed event page for a specific event ID, displaying event information, rewards, location, description, attendance, and registration status.
  *
  * If the event is not found, triggers a 404 not found response.
  *
- * @param params - An object containing the event `id` from the URL parameters.
+ * @param params - A Promise containing an object with the event `id` from the URL parameters.
  * @returns The JSX markup for the event detail page.
  */
-export default async function EventPage({ params }: EventPageProps) {
-  const event = await api.event.getById({ id: params.id });
+export default async function EventPage({ params }: PageParams) {
+  const { id } = await params;
+  const event = await api.event.getById({ id });
 
   if (!event) {
     notFound();
@@ -81,9 +81,11 @@ export default async function EventPage({ params }: EventPageProps) {
             {/* Event Image */}
             {event.imageURL ? (
               <div className="aspect-[16/9] overflow-hidden rounded-lg">
-                <img
+                <Image
                   src={event.imageURL}
                   alt={event.name}
+                  width={800}
+                  height={450}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -237,7 +239,6 @@ export default async function EventPage({ params }: EventPageProps) {
                   </SignInButton>
                 </div>
               )}
-
             </div>
 
             {/* Event Status */}

@@ -16,9 +16,9 @@ interface NextAuthSessionProviderProps {
  * @param children - React nodes to be rendered within the session context
  * @param session - Optional session object to initialize the provider
  */
-export function NextAuthSessionProvider({ 
-  children, 
-  session 
+export function NextAuthSessionProvider({
+  children,
+  session,
 }: NextAuthSessionProviderProps) {
   return <SessionProvider session={session}>{children}</SessionProvider>;
 }

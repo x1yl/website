@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const execRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -11,10 +8,7 @@ export const execRouter = createTRPCRouter({
       include: {
         user: true,
       },
-      orderBy: [
-        { position: "asc" },
-        { user: { name: "asc" } },
-      ],
+      orderBy: [{ position: "asc" }, { user: { name: "asc" } }],
     });
   }),
 
