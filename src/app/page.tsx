@@ -4,6 +4,11 @@ import { MemberChart } from "~/app/_components/member-chart";
 
 export const revalidate = 600;
 
+/**
+ * Renders the homepage with dynamic community statistics, a hero section, quick stats, and a membership growth chart.
+ *
+ * Fetches event, user, and attendance data in parallel, computes summary statistics, and displays them alongside a membership growth visualization.
+ */
 export default async function Home() {
   // Fetch real stats from the database like in the example
   const [events, executives, allUsers, eventAttendances, deletedUsers] = await Promise.all([

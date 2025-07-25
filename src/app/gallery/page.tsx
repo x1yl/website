@@ -1,3 +1,10 @@
+/**
+ * Renders a responsive gallery page with a styled header and an embedded Canva design.
+ *
+ * The page adapts to light and dark modes, features a prominent "Gallery" title, and displays the Canva content within a card-like container that maintains a 16:9 aspect ratio. If the embedded content fails to load, an error is logged to the console and fallback text is shown.
+ *
+ * @returns The React element representing the gallery page.
+ */
 export default function GalleryPage() {
   return (
     <div className=" bg-gray-50 dark:bg-gray-900 py-12 transition-colors">
