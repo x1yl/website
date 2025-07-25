@@ -4,14 +4,12 @@ import * as path from "path";
 import { parse } from "csv-parse/sync";
 
 // Load environment variables for CSV paths
-const CSV_USERS_PATH =
-  process.env.CSV_USERS_PATH ?? "./data/users.csv";
+const CSV_USERS_PATH = process.env.CSV_USERS_PATH ?? "./data/users.csv";
 
 const CSV_EXEC_DETAILS_PATH =
   process.env.CSV_EXEC_DETAILS_PATH ?? "./data/exec_details.csv";
 
-const CSV_EVENTS_PATH =
-  process.env.CSV_EVENTS_PATH ?? "./data/events.csv";
+const CSV_EVENTS_PATH = process.env.CSV_EVENTS_PATH ?? "./data/events.csv";
 
 const CSV_EVENT_ATTENDEES_PATH =
   process.env.CSV_EVENT_ATTENDEES_PATH ?? "./data/event_attendees.csv";
